@@ -8,6 +8,7 @@ from typing import Callable
 
 redis_ = redis.Redis()
 
+
 def count_requests(method: Callable) -> Callable:
     """Decorator to count the number of
     requests made to a URL."""
@@ -25,9 +26,9 @@ def count_requests(method: Callable) -> Callable:
 
     return wrapper
 
+
 @count_requests
 def get_page(url: str) -> str:
     """Fetches the HTML content of a given URL."""
     req = requests.get(url)
     return req.text
-

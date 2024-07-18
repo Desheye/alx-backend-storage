@@ -7,7 +7,8 @@ from typing import Any, Callable, Union
 
 
 def count_calls(method: Callable) -> Callable:
-    '''Decorator to count the number of times a method in the Cache class is called.'''
+    '''Decorator to count the number of times a
+    method in the Cache class is called.'''
     @wraps(method)
     def invoker(*args):
         '''Increments the call count before invoking the method.'''
@@ -20,10 +21,12 @@ def count_calls(method: Callable) -> Callable:
 
 
 def call_history(method: Callable) -> Callable:
-    '''Decorator to record the input and output history of a method in the Cache class.'''
+    '''Decorator to record the input and output
+    history of a method in the Cache class.'''
     @wraps(method)
     def invoker(self, *args, **kwargs) -> Any:
-        '''Stores the method's inputs and outputs before returning the result.'''
+        '''Stores the method's inputs and outputs
+        before returning the result.'''
         in_key = '{}:inputs'.format(method.__qualname__)
         out_key = '{}:outputs'.format(method.__qualname__)
         if isinstance(self._redis, redis.Redis):
@@ -61,6 +64,7 @@ def replay(fn: Callable) -> None:
 
 class Cache:
     '''Represents a cache for storing data in Redis.'''
+
     def __init__(self) -> None:
         '''Initializes the Cache instance and clears the Redis database.'''
         self._redis = redis.Redis()
@@ -77,8 +81,9 @@ class Cache:
         self,
         key: str,
         fn: Callable = None,
-        ) -> Union[str, bytes, int, float]:
-        '''Retrieves a value from Redis, optionally transforming it with a function.'''
+    ) -> Union[str, bytes, int, float]:
+        '''Retrieves a value from Redis, optionally
+        transforming it with a function.'''
         data = self._redis.get(key)
         return fn(data) if fn is not None else data
 
@@ -89,4 +94,3 @@ class Cache:
     def get_int(self, key: str) -> int:
         '''Retrieves an integer value from Redis.'''
         return self.get(key, lambda x: int(x))
-
